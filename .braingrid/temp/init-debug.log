@@ -1,0 +1,11 @@
+22:46:29 [INFO ] init | start | force=undefined project=auto-detect
+22:46:29 [INFO ] init | update_check | available=false current=0.2.65 latest=0.2.65
+22:46:29 [INFO ] init | git_check | installed=true
+22:48:02 [INFO ] init | gh_check | installed=false
+22:48:13 [INFO ] init | jq_check | installed=false
+22:48:13 [INFO ] init | auth_check | authenticated=true
+22:48:15 [INFO ] init | project_found | id=PROJ-1 name=Conecta
+22:48:19 [INFO ] init | config_saved | path=.braingrid/project.json
+22:48:19 [INFO ] github-api | fetch | path=claude-code/README.md
+22:48:20 [INFO ] init | ide_detect | claude_code=false cursor=true
+22:48:25 [INFO ] init | setup_cursor | force=true

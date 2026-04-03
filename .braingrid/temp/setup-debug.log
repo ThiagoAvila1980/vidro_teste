@@ -1,0 +1,24 @@
+22:46:57 [INFO ] setup | start | integration=Cursor force=undefined dry_run=undefined
+22:46:58 [INFO ] github-api | fetch | path=cursor/commands/save-requirement.md
+22:46:58 [INFO ] setup | copy_file | target=.cursor\commands\save-requirement.md
+22:46:58 [INFO ] github-api | fetch | path=cursor/commands/specify.md
+22:46:58 [INFO ] setup | copy_file | target=.cursor\commands\specify.md
+22:46:58 [INFO ] github-api | fetch | path=cursor/rules/braingrid.mdc
+22:46:58 [INFO ] setup | copy_file | target=.cursor\rules\braingrid.mdc
+22:46:58 [INFO ] github-api | fetch | path=cursor/AGENTS.md
+22:46:59 [INFO ] setup | inject | target=AGENTS.md
+22:46:59 [INFO ] github-api | fetch | path=claude-code/README.md
+22:46:59 [INFO ] setup | readme | path=.braingrid/README.md
+22:46:59 [INFO ] setup | complete | installed=3 skipped=0
+22:48:25 [INFO ] setup | start | integration=Cursor force=true dry_run=undefined
+22:48:25 [INFO ] github-api | fetch | path=cursor/commands/save-requirement.md
+22:48:25 [INFO ] setup | copy_file | target=.cursor\commands\save-requirement.md
+22:48:25 [INFO ] github-api | fetch | path=cursor/commands/specify.md
+22:48:25 [INFO ] setup | copy_file | target=.cursor\commands\specify.md
+22:48:25 [INFO ] github-api | fetch | path=cursor/rules/braingrid.mdc
+22:48:26 [INFO ] setup | copy_file | target=.cursor\rules\braingrid.mdc
+22:48:26 [INFO ] github-api | fetch | path=cursor/AGENTS.md
+22:48:26 [INFO ] setup | inject | target=AGENTS.md
+22:48:26 [INFO ] github-api | fetch | path=claude-code/README.md
+22:48:26 [INFO ] setup | readme | path=.braingrid/README.md
+22:48:26 [INFO ] setup | complete | installed=3 skipped=0
