@@ -1,25 +1,24 @@
 import { NextResponse } from "next/server";
-import { createSupabaseClient, getSupabasePublicEnv } from "@/lib/supabase";
+import {
+  createSupabaseClient,
+  getSupabaseEnvPresence,
+  getSupabasePublicEnv,
+} from "@/lib/supabase";
+
+/** Garante que o health não usa output estático com env vazio do build. */
+export const dynamic = "force-dynamic";
 
 /**
  * Verifica ligação ao Supabase com uma leitura mínima em `public.users` (REQ-1).
  */
 export async function GET() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const key = (
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY ??
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  )?.trim();
-  if (!url || !key) {
+  if (!getSupabasePublicEnv()) {
     return NextResponse.json(
       {
         ok: false,
         error: "Variáveis Supabase em falta",
-        detail: {
-          NEXT_PUBLIC_SUPABASE_URL_defined: Boolean(url),
-          chave_publica_defined: Boolean(key),
-        },
-        hint: "Vercel → Settings → Environment Variables: define NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY (ou NEXT_PUBLIC_SUPABASE_ANON_KEY) para o ambiente Production. Guarda e faz Redeploy — variáveis novas só entram após novo deploy.",
+        env_presence: getSupabaseEnvPresence(),
+        hint: "Na Vercel → Environment Variables, marca Production e define URL + chave. Nomes aceites: NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY (recomendado), ou no servidor SUPABASE_URL + SUPABASE_PUBLISHABLE_DEFAULT_KEY (ou SUPABASE_ANON_KEY). Guarda e faz Redeploy.",
       },
       { status: 500 }
     );

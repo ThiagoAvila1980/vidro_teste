@@ -64,20 +64,30 @@ Se `/api/health` responder `{"ok":false,"error":"Variáveis Supabase em falta"}`
 ### Passos na Vercel
 
 1. **Settings → Environment Variables**
-2. Adiciona **exatamente** estes nomes (respeita `NEXT_PUBLIC_` no início):
+2. Adiciona **exatamente** estes nomes (respeita maiúsculas e underscores):
    - `NEXT_PUBLIC_SUPABASE_URL` = `https://<ref>.supabase.co`
    - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` = `sb_publishable_...` (como no Connect do Supabase)  
      **ou** `NEXT_PUBLIC_SUPABASE_ANON_KEY` = chave JWT `eyJ...` (aba legacy)
-3. Em cada variável, marca **Production** (e **Preview** se quiseres previews com Supabase).
-4. **Guarda**.
-5. **Obrigatório:** **Deployments** → menu **⋯** do último deploy → **Redeploy** (ou faz um push vazio). Variáveis novas ou alteradas **só entram no próximo build**.
+3. Em **cada** variável, abre as opções de ambiente e marca **Production** (checkbox). Sem isto, `*.vercel.app` de produção não recebe a variável.
+4. **Save** (guardar cada variável ou o conjunto).
+5. **Obrigatório:** **Deployments** → **⋯** → **Redeploy** no último deployment. Sem novo deploy, o runtime continua sem as variáveis novas.
+
+### Se `NEXT_PUBLIC_*` continuar tudo `false` em `env_presence`
+
+O `/api/health` também aceita variáveis **só para servidor** (não vão para o browser):
+
+- `SUPABASE_URL`
+- `SUPABASE_PUBLISHABLE_DEFAULT_KEY` **ou** `SUPABASE_ANON_KEY`
+
+Define-as na Vercel para **Production** e faz **Redeploy**. Útil se houver alguma anomalia com `NEXT_PUBLIC_*` no runtime.
 
 ### Erros frequentes
 
-- Chave guardada como `SUPABASE_ANON_KEY` **sem** o prefixo `NEXT_PUBLIC_` → o Next não expõe ao bundle/runtime esperado para este cliente.
-- Variáveis só em **Development** ou **Preview**, mas estás a testar **Production** (`vidro-teste.vercel.app`).
-- Esqueceste o **Redeploy** depois de adicionar variáveis.
+- **Production** não marcado nas variáveis → produção vê tudo `false` em `env_presence`.
+- Nome errado (espaço, minúsculas, `SUPABASE_URL` sem `NEXT_PUBLIC_` quando só usas opção A no cliente — no servidor a opção B resolve o health).
+- Variáveis só em **Preview**, mas testas **`vidro-teste.vercel.app`** (produção).
+- **Redeploy** em falta após guardar variáveis.
 
-O JSON de erro pode incluir `detail` com `NEXT_PUBLIC_SUPABASE_URL_defined` e `chave_publica_defined` para veres o que falta.
+O JSON de erro inclui `env_presence` com `true`/`false` por nome (sem expor valores).
 
 Sem variáveis corretas, `/` pode funcionar mas `/api/health` devolve 500 com essa mensagem.
