@@ -59,9 +59,25 @@ No fim do build, a secção **Route (app)** deve listar pelo menos `/` e `/api/h
 
 ## Variáveis em produção
 
-Para `/api/health` devolver `{"ok":true}` na Vercel, define em **Settings → Environment Variables** (Production):
+Se `/api/health` responder `{"ok":false,"error":"Variáveis Supabase em falta"}`, o servidor na Vercel **não vê** URL ou chave. Isto é quase sempre configuração no painel, não bug do código.
 
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` (ou `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
+### Passos na Vercel
 
-Sem isto, `/` pode funcionar mas `/api/health` devolve erro (não costuma ser 404 na raiz).
+1. **Settings → Environment Variables**
+2. Adiciona **exatamente** estes nomes (respeita `NEXT_PUBLIC_` no início):
+   - `NEXT_PUBLIC_SUPABASE_URL` = `https://<ref>.supabase.co`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` = `sb_publishable_...` (como no Connect do Supabase)  
+     **ou** `NEXT_PUBLIC_SUPABASE_ANON_KEY` = chave JWT `eyJ...` (aba legacy)
+3. Em cada variável, marca **Production** (e **Preview** se quiseres previews com Supabase).
+4. **Guarda**.
+5. **Obrigatório:** **Deployments** → menu **⋯** do último deploy → **Redeploy** (ou faz um push vazio). Variáveis novas ou alteradas **só entram no próximo build**.
+
+### Erros frequentes
+
+- Chave guardada como `SUPABASE_ANON_KEY` **sem** o prefixo `NEXT_PUBLIC_` → o Next não expõe ao bundle/runtime esperado para este cliente.
+- Variáveis só em **Development** ou **Preview**, mas estás a testar **Production** (`vidro-teste.vercel.app`).
+- Esqueceste o **Redeploy** depois de adicionar variáveis.
+
+O JSON de erro pode incluir `detail` com `NEXT_PUBLIC_SUPABASE_URL_defined` e `chave_publica_defined` para veres o que falta.
+
+Sem variáveis corretas, `/` pode funcionar mas `/api/health` devolve 500 com essa mensagem.
