@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "hooks:install": "git config core.hooksPath .githooks",
+    "verify:vercel": "npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.101.1",
